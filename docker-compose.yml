@@ -1,0 +1,18 @@
+version: '3.9'
+
+volumes:
+    azurite_data: {}
+
+services:
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.19.0
+    container_name: "azurite-test"
+    hostname: azurite
+    ports:
+      - 10010:10000
+      - 10011:10001
+      - 10012:10002
+    volumes:
+      - azurite_data:/data
+    restart: always

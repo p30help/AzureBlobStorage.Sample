@@ -1,2 +1,4 @@
 # AzureBlobStorage.Sample
-sample project of working with azure blob storage 
+sample project of Azure Blob Storage in .net6 (with Azurite as emulator)
+
+run `docker-compose up` before the project
