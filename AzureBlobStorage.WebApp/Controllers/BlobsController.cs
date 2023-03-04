@@ -1,5 +1,6 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
 using AzureBlobStorage.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -77,6 +78,28 @@ namespace AzureBlobStorage.WebApp.Controllers
                 var blobClient = container.GetBlobClient(blobName);
 
                 return Ok(blobClient.Uri.ToString());
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("GetFileUrl")]
+        public async Task<IActionResult> GetFileUrl(string blobName)
+        {
+            var container = GetBlobContainer();
+
+            try
+            {
+                var blobClient = container.GetBlobClient(blobName);
+                var sasBuilder = new BlobSasBuilder(BlobContainerSasPermissions.Read, DateTimeOffset.Now.AddMinutes(10))
+                {
+                    ContentDisposition = "attachment; filename=" + blobName
+                };
+
+                var url = blobClient.GenerateSasUri(sasBuilder);
+                return Ok(url.AbsoluteUri);
             }
             catch (Exception exp)
             {
