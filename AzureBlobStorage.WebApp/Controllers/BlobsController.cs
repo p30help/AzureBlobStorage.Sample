@@ -116,9 +116,10 @@ namespace AzureBlobStorage.WebApp.Controllers
             {
                 var blobClient = container.GetBlobClient(blobName);
 
-                var blob = await blobClient.DownloadAsync();
+                var memoryStream = new MemoryStream();
+                var blob = await blobClient.DownloadToAsync(memoryStream);
 
-                return File(blob.Value.Content, blob.Value.ContentType);
+                return File(memoryStream, blobName);
             }
             catch (Exception exp)
             {
